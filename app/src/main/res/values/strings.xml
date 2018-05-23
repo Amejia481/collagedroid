@@ -32,6 +32,9 @@
 <resources>
   <string name="app_name">Collage Droid</string>
   <string name="first">First</string>
-  <string name="title_dashboard">Dashboard</string>
+  <string name="second">Second</string>
   <string name="title_notifications">Notifications</string>
+  <string name="first_image">First Image</string>
+  <string name="second_image">Second Image</string>
+  <string name="third_image">Third Image</string>
 </resources>
