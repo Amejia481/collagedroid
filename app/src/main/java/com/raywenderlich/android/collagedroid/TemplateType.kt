@@ -31,48 +31,11 @@
 
 package com.raywenderlich.android.collagedroid
 
-import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.support.v7.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import android.support.annotation.LayoutRes
+import com.raywenderlich.android.collagedroid.R.layout.fragment_template_1
 
-class MainActivity : AppCompatActivity() {
-
-  private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-    when (item.itemId) {
-      R.id.navigation_home -> {
-        changeScreen(TemplateType.FIRST)
-
-        return@OnNavigationItemSelectedListener true
-      }
-      R.id.navigation_dashboard -> {
-        changeScreen(TemplateType.SECOND)
-
-        return@OnNavigationItemSelectedListener true
-      }
-      R.id.navigation_notifications -> {
-        changeScreen(TemplateType.THIRD)
-        return@OnNavigationItemSelectedListener true
-      }
-    }
-    false
-  }
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
-    changeScreen(TemplateType.FIRST)
-
-    navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-  }
-
-  private fun changeScreen(templateType: TemplateType) {
-    val fragment = CollageFragment.newInstance(templateType)
-    val tag = fragment.javaClass.simpleName
-
-    supportFragmentManager
-        .beginTransaction()
-        .replace(R.id.collage_container, fragment, tag)
-        .commit()
-  }
+enum class TemplateType(@LayoutRes var layout: Int) {
+  FIRST(fragment_template_1),
+  SECOND(fragment_template_1),
+  THIRD(fragment_template_1);
 }

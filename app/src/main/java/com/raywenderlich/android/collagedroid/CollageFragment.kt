@@ -32,47 +32,37 @@
 package com.raywenderlich.android.collagedroid
 
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.support.v7.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import android.support.v4.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 
-class MainActivity : AppCompatActivity() {
+class CollageFragment : Fragment() {
 
-  private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-    when (item.itemId) {
-      R.id.navigation_home -> {
-        changeScreen(TemplateType.FIRST)
+  private lateinit var templateType: TemplateType
 
-        return@OnNavigationItemSelectedListener true
-      }
-      R.id.navigation_dashboard -> {
-        changeScreen(TemplateType.SECOND)
+  companion object {
+    private const val ARG_TEMPLATE_TYPE = "ARG_TEMPLATE_TYPE"
 
-        return@OnNavigationItemSelectedListener true
-      }
-      R.id.navigation_notifications -> {
-        changeScreen(TemplateType.THIRD)
-        return@OnNavigationItemSelectedListener true
-      }
+    fun newInstance(templateType: TemplateType): CollageFragment {
+      val fragment = CollageFragment()
+      val args = Bundle()
+      args.putString(ARG_TEMPLATE_TYPE, templateType.name)
+      fragment.arguments = args
+      return fragment
     }
-    false
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
-    changeScreen(TemplateType.FIRST)
 
-    navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+    arguments?.let {
+
+      templateType = TemplateType.valueOf(it.getString(ARG_TEMPLATE_TYPE))
+    }
   }
 
-  private fun changeScreen(templateType: TemplateType) {
-    val fragment = CollageFragment.newInstance(templateType)
-    val tag = fragment.javaClass.simpleName
-
-    supportFragmentManager
-        .beginTransaction()
-        .replace(R.id.collage_container, fragment, tag)
-        .commit()
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    return inflater.inflate(templateType.layout, container, false)
   }
 }
