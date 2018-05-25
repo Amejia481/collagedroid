@@ -37,4 +37,5 @@
   <string name="first_image">First Image</string>
   <string name="second_image">Second Image</string>
   <string name="third_image">Third Image</string>
+  <string name="droid_image">Droid Image</string>
 </resources>

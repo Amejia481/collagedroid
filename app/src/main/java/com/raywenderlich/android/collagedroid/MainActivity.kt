@@ -32,26 +32,35 @@
 package com.raywenderlich.android.collagedroid
 
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
+import android.support.annotation.DrawableRes
+import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
+import com.raywenderlich.android.collagedroid.R.drawable.android_kotlin
+import com.raywenderlich.android.collagedroid.R.drawable.android_happy
+import com.raywenderlich.android.collagedroid.R.drawable.android_jetpack
 
 class MainActivity : AppCompatActivity() {
 
-  private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+  private val mOnNavigationItemSelectedListener = OnNavigationItemSelectedListener { item ->
     when (item.itemId) {
       R.id.navigation_home -> {
         changeScreen(TemplateType.FIRST)
-
+        changeDroidImage(android_jetpack)
         return@OnNavigationItemSelectedListener true
       }
       R.id.navigation_dashboard -> {
         changeScreen(TemplateType.SECOND)
+        changeDroidImage(android_kotlin)
 
         return@OnNavigationItemSelectedListener true
       }
       R.id.navigation_notifications -> {
         changeScreen(TemplateType.THIRD)
+        changeDroidImage(android_happy)
         return@OnNavigationItemSelectedListener true
       }
     }
@@ -61,9 +70,8 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
-    changeScreen(TemplateType.FIRST)
-
     navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+    navigation.selectedItemId = R.id.navigation_home
   }
 
   private fun changeScreen(templateType: TemplateType) {
@@ -74,5 +82,19 @@ class MainActivity : AppCompatActivity() {
         .beginTransaction()
         .replace(R.id.collage_container, fragment, tag)
         .commit()
+  }
+
+  private fun changeDroidImage(@DrawableRes drawable: Int) {
+    droid_image.setImageResource(drawable)
+    animateDroidImage()
+  }
+
+  private fun animateDroidImage() {
+    val anim = RotateAnimation(0f, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+    anim.interpolator = LinearInterpolator()
+    anim.repeatCount = 1
+    anim.duration = 700
+
+    droid_image.startAnimation(anim)
   }
 }
