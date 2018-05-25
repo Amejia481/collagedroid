@@ -34,9 +34,10 @@ package com.raywenderlich.android.collagedroid
 import android.support.annotation.LayoutRes
 import com.raywenderlich.android.collagedroid.R.layout.fragment_template_1
 import com.raywenderlich.android.collagedroid.R.layout.fragment_template_2
+import com.raywenderlich.android.collagedroid.R.layout.fragment_template_3
 
 enum class TemplateType(@LayoutRes var layout: Int) {
   FIRST(fragment_template_1),
   SECOND(fragment_template_2),
-  THIRD(fragment_template_1);
+  THIRD(fragment_template_3);
 }
