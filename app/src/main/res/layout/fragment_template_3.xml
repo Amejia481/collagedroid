@@ -57,6 +57,7 @@
       android:background="@color/gray"
       android:contentDescription="@string/first_image"
       android:foreground="?attr/selectableItemBackground"
+      android:scaleType="fitXY"
       app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -68,6 +69,7 @@
       android:background="@color/gray"
       android:contentDescription="@string/second_image"
       android:foreground="?attr/selectableItemBackground"
+      android:scaleType="fitXY"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent" />
   </LinearLayout>
@@ -80,6 +82,7 @@
     android:background="@color/gray"
     android:contentDescription="@string/third_image"
     android:foreground="?attr/selectableItemBackground"
+    android:scaleType="fitXY"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

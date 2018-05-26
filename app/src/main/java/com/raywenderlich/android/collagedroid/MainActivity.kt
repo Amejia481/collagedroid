@@ -44,7 +44,6 @@ import com.raywenderlich.android.collagedroid.R.drawable.android_happy
 import com.raywenderlich.android.collagedroid.R.drawable.android_jetpack
 
 class MainActivity : AppCompatActivity() {
-
   private val mOnNavigationItemSelectedListener = OnNavigationItemSelectedListener { item ->
     when (item.itemId) {
       R.id.navigation_home -> {
