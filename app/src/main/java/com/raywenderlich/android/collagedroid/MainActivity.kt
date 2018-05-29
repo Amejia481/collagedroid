@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
 
     supportFragmentManager
         .beginTransaction()
-        .replace(R.id.collage_container, fragment, tag)
+        .replace(R.id.fragment_container, fragment, tag)
         .commit()
   }
 

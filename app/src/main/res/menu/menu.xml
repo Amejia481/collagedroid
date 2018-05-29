@@ -29,15 +29,13 @@
   ~
   -->
 
-<resources>
-  <string name="app_name">Collage Droid</string>
-  <string name="first">First</string>
-  <string name="second">Second</string>
-  <string name="third">Third</string>
-  <string name="first_image">First Image</string>
-  <string name="second_image">Second Image</string>
-  <string name="third_image">Third Image</string>
-  <string name="droid_image">Droid Image</string>
-  <string name="done">Done</string>
-  <string name="error_message_unable_to_generate_collage">Unable to generate collage</string>
-</resources>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item
+    android:id="@+id/done"
+    android:icon="@drawable/ic_done"
+    android:title="@string/done"
+    app:showAsAction="always" />
+
+</menu>
