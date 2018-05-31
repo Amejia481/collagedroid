@@ -33,33 +33,36 @@ package com.raywenderlich.android.collagedroid
 
 import android.os.Bundle
 import android.support.annotation.DrawableRes
+import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener
 import android.support.v7.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
+import android.widget.ImageView
 import com.raywenderlich.android.collagedroid.R.drawable.android_kotlin
 import com.raywenderlich.android.collagedroid.R.drawable.android_happy
 import com.raywenderlich.android.collagedroid.R.drawable.android_jetpack
 
 class MainActivity : AppCompatActivity() {
+
+  private lateinit var droidImage: ImageView
+  private lateinit var navigation: BottomNavigationView
+
   private val mOnNavigationItemSelectedListener = OnNavigationItemSelectedListener { item ->
     when (item.itemId) {
-      R.id.navigation_home -> {
-        changeScreen(TemplateType.FIRST)
-        changeDroidImage(android_jetpack)
-        return@OnNavigationItemSelectedListener true
-      }
-      R.id.navigation_dashboard -> {
-        changeScreen(TemplateType.SECOND)
-        changeDroidImage(android_kotlin)
+      R.id.navigation_first -> {
+        changeScreen(TemplateType.FIRST, android_jetpack)
 
         return@OnNavigationItemSelectedListener true
       }
-      R.id.navigation_notifications -> {
-        changeScreen(TemplateType.THIRD)
-        changeDroidImage(android_happy)
+      R.id.navigation_second -> {
+        changeScreen(TemplateType.SECOND, android_kotlin)
+
+        return@OnNavigationItemSelectedListener true
+      }
+      R.id.navigation_third -> {
+        changeScreen(TemplateType.THIRD, android_happy)
         return@OnNavigationItemSelectedListener true
       }
     }
@@ -69,11 +72,12 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
+    bindUI()
     navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-    navigation.selectedItemId = R.id.navigation_home
+    navigation.selectedItemId = R.id.navigation_first
   }
 
-  private fun changeScreen(templateType: TemplateType) {
+  private fun changeScreen(templateType: TemplateType, @DrawableRes drawable: Int) {
     val fragment = CollageFragment.newInstance(templateType)
     val tag = fragment.javaClass.simpleName
 
@@ -81,19 +85,28 @@ class MainActivity : AppCompatActivity() {
         .beginTransaction()
         .replace(R.id.fragment_container, fragment, tag)
         .commit()
+
+    changeDroidImage(drawable)
   }
 
   private fun changeDroidImage(@DrawableRes drawable: Int) {
-    droid_image.setImageResource(drawable)
+    droidImage.setImageResource(drawable)
     animateDroidImage()
   }
 
   private fun animateDroidImage() {
     val anim = RotateAnimation(0f, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-    anim.interpolator = LinearInterpolator()
-    anim.repeatCount = 1
-    anim.duration = 700
+    with(anim) {
+      interpolator = LinearInterpolator()
+      repeatCount = 1
+      duration = 700
+    }
 
-    droid_image.startAnimation(anim)
+    droidImage.startAnimation(anim)
+  }
+
+  private fun bindUI() {
+    navigation = findViewById(R.id.navigation)
+    droidImage = findViewById(R.id.droid_image)
   }
 }

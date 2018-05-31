@@ -32,18 +32,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
   <item
-    android:id="@+id/navigation_home"
-    android:icon="@drawable/ic_first_template_24dp"
+    android:id="@+id/navigation_first"
+    android:icon="@drawable/ic_first"
     android:title="@string/first" />
 
   <item
-    android:id="@+id/navigation_dashboard"
-    android:icon="@drawable/ic_second_template_24"
+    android:id="@+id/navigation_second"
+    android:icon="@drawable/ic_second"
     android:title="@string/second" />
 
   <item
-    android:id="@+id/navigation_notifications"
-    android:icon="@drawable/ic_third_template_24dp"
+    android:id="@+id/navigation_third"
+    android:icon="@drawable/ic_third"
     android:title="@string/third" />
 
 </menu>
