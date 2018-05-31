@@ -1,7 +1,7 @@
 # CollageDroid
 It’s an app that generates delightful collages with Android-ish sugar on top
 
-<img src="img/screenshot.jpg" height="600em" />
+<img src="screenshot.jpg" height="600em" />
 
 ## License
 
