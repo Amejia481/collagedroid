@@ -34,13 +34,11 @@ package com.raywenderlich.android.collagedroid
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity.RESULT_OK
 import android.content.ContentResolver
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -54,13 +52,17 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import android.provider.MediaStore.Images.Media.MIME_TYPE
 import android.provider.MediaStore.Images.Media.DATE_ADDED
 import android.provider.MediaStore.Images.Media.DATE_TAKEN
 import android.provider.MediaStore.Images.Media.DATA
 import android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
 import android.widget.Toast.LENGTH_LONG
+import androidx.core.content.contentValuesOf
+import androidx.core.os.bundleOf
+import androidx.core.view.get
+import androidx.core.view.toBitmap
+import androidx.core.widget.toast
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import java.io.File
@@ -86,9 +88,8 @@ class CollageFragment : Fragment(), View.OnClickListener {
 
     fun newInstance(templateType: TemplateType): CollageFragment {
       val fragment = CollageFragment()
-      val args = Bundle()
-      args.putString(ARG_TEMPLATE_TYPE, templateType.name)
-      fragment.arguments = args
+      val bundle = bundleOf(ARG_TEMPLATE_TYPE to templateType.name)
+      fragment.arguments = bundle
       return fragment
     }
   }
@@ -200,11 +201,7 @@ class CollageFragment : Fragment(), View.OnClickListener {
   }
 
   private fun viewToBitmap(view: View): Bitmap {
-    val bitmap = Bitmap.createBitmap(view.width, view.height,
-        Bitmap.Config.ARGB_8888)
-    val canvas = Canvas(bitmap)
-    view.draw(canvas)
-    return bitmap
+    return view.toBitmap()
   }
 
   private fun storeBitmap(context: Context, bitmap: Bitmap): Uri? {
@@ -219,8 +216,7 @@ class CollageFragment : Fragment(), View.OnClickListener {
           storedImagePath)
     } catch (e: IOException) {
       e.printStackTrace()
-
-      Toast.makeText(context, R.string.error_message_unable_to_generate_collage, LENGTH_LONG).show()
+      context.toast(R.string.error_message_unable_to_generate_collage, LENGTH_LONG)
     }
     return collageUri
   }
@@ -243,14 +239,15 @@ class CollageFragment : Fragment(), View.OnClickListener {
   }
 
   private fun addImageToGallery(cr: ContentResolver, imgType: String, filepath: File): Uri? {
-    val values = ContentValues()
     val currentTime = System.currentTimeMillis()
     val fileString = filepath.toString()
 
-    values.put(MIME_TYPE, "image/$imgType")
-    values.put(DATE_ADDED, currentTime)
-    values.put(DATE_TAKEN, currentTime)
-    values.put(DATA, fileString)
+    val values = contentValuesOf(
+        MIME_TYPE to "image/$imgType",
+        DATE_ADDED to currentTime,
+        DATE_TAKEN to currentTime,
+        DATA to fileString
+    )
     return cr.insert(EXTERNAL_CONTENT_URI, values)
   }
 
@@ -302,7 +299,7 @@ class CollageFragment : Fragment(), View.OnClickListener {
   }
 
   private fun hideMenuItemDone(menu: Menu) {
-    menuDone = menu.getItem(0)
+    menuDone = menu[0]
     menuDone.isVisible = false
   }
 
