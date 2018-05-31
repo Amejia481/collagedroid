@@ -44,7 +44,6 @@ import android.graphics.Canvas
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
@@ -56,6 +55,11 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import android.provider.MediaStore.Images.Media.MIME_TYPE
+import android.provider.MediaStore.Images.Media.DATE_ADDED
+import android.provider.MediaStore.Images.Media.DATE_TAKEN
+import android.provider.MediaStore.Images.Media.DATA
+import android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
 import android.widget.Toast.LENGTH_LONG
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
@@ -74,6 +78,7 @@ class CollageFragment : Fragment(), View.OnClickListener {
   private lateinit var photo3: ImageView
   private lateinit var collageContainer: View
   private lateinit var selectedPhoto: ImageView
+  private lateinit var menuDone: MenuItem
 
   companion object {
     private const val ARG_TEMPLATE_TYPE = "ARG_TEMPLATE_TYPE"
@@ -125,7 +130,6 @@ class CollageFragment : Fragment(), View.OnClickListener {
   override fun onClick(view: View) {
     selectedPhoto = view as ImageView
     val photoInfo = selectedPhoto.tag as PhotoInfo
-
     showCropView(photoInfo)
   }
 
@@ -142,6 +146,7 @@ class CollageFragment : Fragment(), View.OnClickListener {
       if (resultCode == RESULT_OK) {
         val resultUri = result.uri
         selectedPhoto.setImageURI(resultUri)
+        showGenerateCollageMenuIfNeedIt()
       }
     }
   }
@@ -149,6 +154,7 @@ class CollageFragment : Fragment(), View.OnClickListener {
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
     inflater.inflate(R.menu.menu, menu)
     super.onCreateOptionsMenu(menu, inflater)
+    hideMenuItemDone(menu)
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -238,12 +244,14 @@ class CollageFragment : Fragment(), View.OnClickListener {
 
   private fun addImageToGallery(cr: ContentResolver, imgType: String, filepath: File): Uri? {
     val values = ContentValues()
-    values.put(MediaStore.Images.Media.MIME_TYPE, "image/$imgType")
-    values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis())
-    values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
-    values.put(MediaStore.Images.Media.DATA, filepath.toString())
+    val currentTime = System.currentTimeMillis()
+    val fileString = filepath.toString()
 
-    return cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+    values.put(MIME_TYPE, "image/$imgType")
+    values.put(DATE_ADDED, currentTime)
+    values.put(DATE_TAKEN, currentTime)
+    values.put(DATA, fileString)
+    return cr.insert(EXTERNAL_CONTENT_URI, values)
   }
 
   private fun isWriteExternalStoragePermissionGranted(context: Context): Boolean {
@@ -283,5 +291,23 @@ class CollageFragment : Fragment(), View.OnClickListener {
     }
 
     return shouldShould
+  }
+
+  private fun areAllImageFilled(): Boolean {
+    return photo1.isNotEmpty() && photo2.isNotEmpty() && photo2.isNotEmpty()
+  }
+
+  private fun ImageView.isNotEmpty(): Boolean {
+    return drawable != null
+  }
+
+  private fun hideMenuItemDone(menu: Menu) {
+    menuDone = menu.getItem(0)
+    menuDone.isVisible = false
+  }
+
+  private fun showGenerateCollageMenuIfNeedIt() {
+    if (areAllImageFilled())
+      menuDone.isVisible = true
   }
 }
