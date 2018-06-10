@@ -32,14 +32,14 @@
 package com.raywenderlich.android.collagedroid
 
 import android.os.Bundle
-import android.support.annotation.DrawableRes
-import android.support.design.widget.BottomNavigationView
-import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener
-import android.support.v7.app.AppCompatActivity
+import androidx.annotation.DrawableRes
+import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener
+import androidx.appcompat.app.AppCompatActivity
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import android.widget.ImageView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.raywenderlich.android.collagedroid.R.drawable.android_kotlin
 import com.raywenderlich.android.collagedroid.R.drawable.android_happy
 import com.raywenderlich.android.collagedroid.R.drawable.android_jetpack

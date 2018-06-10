@@ -31,7 +31,7 @@
 
 package com.raywenderlich.android.collagedroid
 
-import android.support.annotation.LayoutRes
+import androidx.annotation.LayoutRes
 import com.raywenderlich.android.collagedroid.R.layout.fragment_template_1
 import com.raywenderlich.android.collagedroid.R.layout.fragment_template_2
 import com.raywenderlich.android.collagedroid.R.layout.fragment_template_3
