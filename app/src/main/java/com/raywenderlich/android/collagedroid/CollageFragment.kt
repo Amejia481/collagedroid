@@ -86,9 +86,11 @@ class CollageFragment : Fragment(), View.OnClickListener {
 
     fun newInstance(templateType: TemplateType): CollageFragment {
       val fragment = CollageFragment()
-      val args = Bundle()
-      args.putString(ARG_TEMPLATE_TYPE, templateType.name)
-      fragment.arguments = args
+      // 1 Create a Bundle object and Add the values
+      val bundle = Bundle()
+      bundle.putString(ARG_TEMPLATE_TYPE, templateType.name)
+      // 2 Add the bundle to fragment arguments
+      fragment.arguments = bundle
       return fragment
     }
   }
@@ -211,9 +213,8 @@ class CollageFragment : Fragment(), View.OnClickListener {
     var collageUri: Uri? = null
     try {
       val storedImagePath = createImageFile(context)
-      val output = FileOutputStream(storedImagePath)
-      bitmap.compress(Bitmap.CompressFormat.JPEG, 100, output)
-      output.close()
+
+      saveBitMapOnDisk(storedImagePath, bitmap)
 
       collageUri = addImageToGallery(context.contentResolver, "jpeg",
           storedImagePath)
@@ -223,6 +224,12 @@ class CollageFragment : Fragment(), View.OnClickListener {
       Toast.makeText(context, R.string.error_message_unable_to_generate_collage, LENGTH_LONG).show()
     }
     return collageUri
+  }
+
+  private fun saveBitMapOnDisk(storedImagePath: File, bitmap: Bitmap) {
+    val output = FileOutputStream(storedImagePath)
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, output)
+    output.close()
   }
 
   @Throws(IOException::class)
